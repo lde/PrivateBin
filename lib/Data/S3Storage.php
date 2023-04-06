@@ -35,9 +35,11 @@
 
 namespace PrivateBin\Data;
 
+use Aws\Credentials\CredentialProvider;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use PrivateBin\Json;
+
 
 class S3Storage extends AbstractData
 {
@@ -90,6 +92,10 @@ class S3Storage extends AbstractData
 
                 $this->_options['credentials']['key']    = $options['accesskey'];
                 $this->_options['credentials']['secret'] = $options['secretkey'];
+            } else {
+                $provider = CredentialProvider::defaultProvider();
+                $this->_options["credentials"] = $provider;
+
             }
             if (array_key_exists('region', $options)) {
                 $this->_options['region'] = $options['region'];
